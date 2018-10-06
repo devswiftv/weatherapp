@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  PageControl
 //
-//  Created by Andrew Seeley on 2/2/17.
-//  Copyright © 2017 Seemu. All rights reserved.
+//  Created by Valentina on 2/2/17.
+//  Copyright © 2018. All rights reserved.
 //
 import GooglePlaces
 import UIKit
@@ -12,7 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+//
 //
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         GMSPlacesClient.provideAPIKey("AIzaSyA0mahYZlPgSvGTu6AHWkvJ90ATfTLkorc")
