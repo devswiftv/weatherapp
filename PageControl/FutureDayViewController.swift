@@ -24,25 +24,32 @@ class FutureDayViewController: UIViewController {
     var month : Month?
     var data : Data?
     var indexOfDay = 0
-    
+    var currentCity = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         self.layoutLabels()
-        self.rainComment.text = rainsExpected(weather: self.data!.weather[self.indexOfDay])
-        self.windComment.text = getWindComment(weather: self.data!.weather[self.indexOfDay])
-        self.comment.text = self.CommentForFutureDay(weather: self.data!.weather[self.indexOfDay])
-        self.date.text = self.data!.weather[self.indexOfDay].date!
-        self.cityLabel.text = self.data!.request[0].query!
-        self.morningTemp.text = self.data!.weather[self.indexOfDay].hourly![9].tempC + "°C"
-        self.morningImage.image = UIImage(named: self.data!.weather[self.indexOfDay].hourly![9].weatherCode)
-        self.dayTemp.text = self.data!.weather[self.indexOfDay].hourly![15].tempC + "°C"
-        self.dayImage.image = UIImage(named: self.data!.weather[self.indexOfDay].hourly![15].weatherCode)
-        self.eveningTemp.text = self.data!.weather[self.indexOfDay].hourly![21].tempC + "°C"
-        self.eveningImage.image = UIImage(named: self.data!.weather[self.indexOfDay].hourly![21].weatherCode)
-        
+        loadData(currentCity: self.currentCity, completion:
+            { [weak self] alldata in
+                self!.fullFillInfo(data: alldata)
+                self?.data = alldata
+        })
         print(indexOfDay)
     }
-
+    func fullFillInfo (data : Data){
+                DispatchQueue.main.async{
+        self.rainComment.text = rainsExpected(weather: data.weather[self.indexOfDay])
+        self.windComment.text = getWindComment(weather: data.weather[self.indexOfDay])
+        self.comment.text = self.CommentForFutureDay(weather: data.weather[self.indexOfDay])
+        self.date.text = data.weather[self.indexOfDay].date!
+        self.cityLabel.text = data.request[0].query!
+        self.morningTemp.text = data.weather[self.indexOfDay].hourly![9].tempC + "°C"
+        self.morningImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![9].weatherCode)
+        self.dayTemp.text = data.weather[self.indexOfDay].hourly![15].tempC + "°C"
+        self.dayImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![15].weatherCode)
+        self.eveningTemp.text = data.weather[self.indexOfDay].hourly![21].tempC + "°C"
+        self.eveningImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![21].weatherCode)
+        }
+    }
     func layoutLabels(){ //fillable elements created programmatically
         let date = UILabel()
         let label = UILabel()

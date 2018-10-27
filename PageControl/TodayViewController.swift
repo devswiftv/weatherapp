@@ -39,8 +39,10 @@ class TodayViewController: UIViewController , UIGestureRecognizerDelegate{
     var partOfDay : PartsOfDay = .day
     var currentCity = "Moscow"
     var data : Data?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(self.currentCity)
         self.views = [self.nowTapView,self.secondPartTapView,self.thirdPartTapView]
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
@@ -54,21 +56,11 @@ class TodayViewController: UIViewController , UIGestureRecognizerDelegate{
         getCurrentHour()
         self.commentToday.adjustsFontSizeToFitWidth = true
         self.commentToday.adjustsFontForContentSizeCategory = true
-        let jsonUrlString = "https://api.worldweatheronline.com/premium/v1/weather.ashx?key=b6a175fdfba04cd2887194127182408&q=\(currentCity)&format=json&num_of_days=7&mca=no&tp=1&quot"
-        let url = URL(string: jsonUrlString)
-        let task = URLSession.shared.dataTask(with: url!){ (data,
-            response, err) in
-            do {
-                let alldata = try
-                    JSONDecoder().decode(Main.self, from: data!)
-                self.data = alldata.data
-                self.fillInfo(data: self.data!)
-//                DispatchQueue.main.async{
-//
-//           }
-            } catch { print("Error deserializing JSON: \(error)")}
-        }
-        task.resume()
+        loadData(currentCity: currentCity, completion:
+            { [weak self] alldata in
+                self!.fillInfo(data: alldata)
+                self?.data = alldata
+        })
         self.city.text = self.currentCity
         // Do any additional setup after loading the view.
     }

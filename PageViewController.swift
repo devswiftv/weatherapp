@@ -9,8 +9,8 @@
 import UIKit
 
 class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-
-    var allDaysData : Main?
+    var typedCity = ""
+    var allDaysData : Data?
     var pageControl = UIPageControl()
     
     // MARK: UIPageViewControllerDataSource
@@ -29,31 +29,8 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
         super.viewDidLoad()
         self.dataSource = self
         self.delegate = self
-        let jsonUrlString = "https://api.worldweatheronline.com/premium/v1/weather.ashx?key=b6a175fdfba04cd2887194127182408&q=Moscow&format=json&num_of_days=7&mca=no&tp=1&quot"
-        
-        let url = URL(string: jsonUrlString)
-        let task = URLSession.shared.dataTask(with: url!){ (data,
-            response, err) in
-            do {
-                let alldata = try
-                    JSONDecoder().decode(Main.self, from: data!)
-                DispatchQueue.main.async{
-                    self.allDaysData = alldata
-                    var index = 0
-                    for item in self.orderedViewControllers{
-                        let vc = item as? FutureDayViewController
-                        vc?.indexOfDay = index
-                        vc?.data = self.allDaysData!.data
-                        index += 1
-                    }
-                }
-            }
-                catch { print("Error deserializing JSON: \(error)")}
-        }
-        task.resume()
-        
-        
-        // This sets up the first view that will show up on our page control
+      
+
         if let firstViewController = orderedViewControllers.first {
             setViewControllers([firstViewController],
                                direction: .forward,
@@ -98,18 +75,18 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
         }
         
         let previousIndex = viewControllerIndex - 1
-        
-        // User is on the first view controller and swiped left to loop to
-        // the last view controller.
         guard previousIndex >= 0 else {
             return orderedViewControllers.last
-            // Uncommment the line below, remove the line above if you don't want the page control to loop.
-            // return nil
         }
         
         guard orderedViewControllers.count > previousIndex else {
             return nil
         }
+        if (orderedViewControllers[previousIndex] as? FutureDayViewController) != nil{
+            (orderedViewControllers[previousIndex] as? FutureDayViewController)?.currentCity = self.typedCity}
+        else {
+          (orderedViewControllers[previousIndex] as? TodayViewController)?.currentCity = self.typedCity}
+        
         return orderedViewControllers[previousIndex]    }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -119,19 +96,17 @@ class PageViewController: UIPageViewController, UIPageViewControllerDelegate, UI
         
         let nextIndex = viewControllerIndex + 1
         let orderedViewControllersCount = orderedViewControllers.count
-        
-        // User is on the last view controller and swiped right to loop to
-        // the first view controller.
         guard orderedViewControllersCount != nextIndex else {
             return orderedViewControllers.first
-            // Uncommment the line below, remove the line above if you don't want the page control to loop.
-            // return nil
         }
         
         guard orderedViewControllersCount > nextIndex else {
             return nil
         }
-        
+        if (orderedViewControllers[nextIndex] as? FutureDayViewController) != nil{
+            (orderedViewControllers[nextIndex] as? FutureDayViewController)?.currentCity = self.typedCity}
+        else {
+            (orderedViewControllers[nextIndex] as? TodayViewController)?.currentCity = self.typedCity}
         return orderedViewControllers[nextIndex]
     }
     

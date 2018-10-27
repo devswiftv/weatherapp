@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="1Ex-A5-PWV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="zQi-G8-Pf2">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -640,7 +640,7 @@
         <!--Search Table View Controller-->
         <scene sceneID="pk6-y7-rep">
             <objects>
-                <tableViewController id="zQi-G8-Pf2" customClass="SearchTableViewController" customModule="PageControl" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="zQi-G8-Pf2" customClass="SearchTableViewController" customModule="PageControl" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bzf-D8-Wvy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -666,7 +666,8 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="searchCity" destination="lkS-z8-EgS" id="orl-hM-Ada"/>
+                        <outlet property="searchCity" destination="lkS-z8-EgS" id="r7w-HQ-nXn"/>
+                        <segue destination="1Ex-A5-PWV" kind="presentation" identifier="goToForecast" id="e31-Bw-TF5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1w4-AK-I0s" userLabel="First Responder" sceneMemberID="firstResponder"/>

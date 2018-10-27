@@ -64,6 +64,7 @@
 		9473AEB61E4340D900A5CD23 /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PageViewController.swift; path = ../PageViewController.swift; sourceTree = "<group>"; };
 		981D0AFD7E6C4BD9FB29C1F0 /* Pods_PageControlUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PageControlUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75CB64D2164BE7C007E2E72 /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		A7BE40EC216B68F10050EB1D /* Pods_PageControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_PageControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7D0DA51216031EE004BE795 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		A7EE3B3B216374D200BFA16E /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		A7F71C79215E2C2B00C5AB98 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +107,7 @@
 		9473AE7A1E433EB100A5CD23 = {
 			isa = PBXGroup;
 			children = (
+				A7BE40EC216B68F10050EB1D /* Pods_PageControl.framework */,
 				9473AE851E433EB100A5CD23 /* PageControl */,
 				9473AE9A1E433EB100A5CD23 /* PageControlTests */,
 				9473AEA51E433EB100A5CD23 /* PageControlUITests */,
@@ -263,13 +265,13 @@
 					};
 					9473AE961E433EB100A5CD23 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = XLDG57CC7V;
+						DevelopmentTeam = 99F33CAX5W;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9473AE821E433EB100A5CD23;
 					};
 					9473AEA11E433EB100A5CD23 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = XLDG57CC7V;
+						DevelopmentTeam = 99F33CAX5W;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9473AE821E433EB100A5CD23;
 					};
@@ -612,7 +614,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = XLDG57CC7V;
+				DEVELOPMENT_TEAM = 99F33CAX5W;
 				INFOPLIST_FILE = PageControlTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seemu.PageControlTests;
@@ -628,7 +630,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = XLDG57CC7V;
+				DEVELOPMENT_TEAM = 99F33CAX5W;
 				INFOPLIST_FILE = PageControlTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seemu.PageControlTests;
@@ -643,7 +645,7 @@
 			baseConfigurationReference = 752AD886F809064ECEBD09EB /* Pods-PageControlUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = XLDG57CC7V;
+				DEVELOPMENT_TEAM = 99F33CAX5W;
 				INFOPLIST_FILE = PageControlUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seemu.PageControlUITests;
@@ -658,7 +660,7 @@
 			baseConfigurationReference = DB1797BB7C0E20AE79C91EEF /* Pods-PageControlUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = XLDG57CC7V;
+				DEVELOPMENT_TEAM = 99F33CAX5W;
 				INFOPLIST_FILE = PageControlUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = seemu.PageControlUITests;
