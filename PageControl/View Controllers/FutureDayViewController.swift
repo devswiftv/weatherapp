@@ -11,6 +11,9 @@ import UIKit
 class FutureDayViewController: UIViewController, UIScrollViewDelegate {
 
     
+    @IBOutlet weak var thirdPartLabel: UILabel!
+    @IBOutlet weak var secondPartLabel: UILabel!
+    @IBOutlet weak var nowLabel: UILabel!
     @IBOutlet weak var windComment: UILabel!
     @IBOutlet weak var rainComment: UILabel!
     @IBOutlet weak var comment: UILabel!
@@ -38,7 +41,8 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
             loadData(currentCity: self.currentCity, completion:
                         { [weak self] alldata in
                                 FutureDayViewController.data = alldata
-                                self!.fullFillInfo()
+//                                self!.fullFillInfo()
+                            self?.fullFillTodayInfo()
                             
                     })
 //            FutureDayViewController.status = true
@@ -59,12 +63,10 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
         
     }
     func fullFillInfo (){
-        
-        
                 DispatchQueue.main.async{
         self.rainComment.text = rainsExpected(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
         self.windComment.text = getWindComment(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
-        self.comment.text = self.CommentForFutureDay(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
+        self.comment.text = CommentForFutureDay(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
         self.date.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].date!
         self.cityLabel.text = FutureDayViewController.data!.request[0].query!
         self.morningTemp.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![9].tempC + "°C"
@@ -76,8 +78,6 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
                     FutureDayViewController.counter += 1
                     FutureDayViewController.status = true
         }
-        
-        
     }
     func layoutLabels(){ //fillable elements created programmatically
         let date = UILabel()
@@ -91,6 +91,9 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
         let commentLabel = UILabel()
         let rainComment = UILabel()
         let windComment = UILabel()
+        let nowLabel = UILabel()
+        let secondPartLabel = UILabel()
+        let thirdPartLabel = UILabel()
         
         self.view.addSubview(labelmorning)
         self.view.addSubview(labelday)
@@ -103,12 +106,46 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
         self.view.addSubview(commentLabel)
         self.view.addSubview(rainComment)
         self.view.addSubview(windComment)
+        self.view.addSubview(nowLabel)
+        self.view.addSubview(secondPartLabel)
+        self.view.addSubview(thirdPartLabel)
 
+        nowLabel.translatesAutoresizingMaskIntoConstraints = false
+        nowLabel.centerXAnchor.constraint(equalTo: self.view!.leftAnchor, constant: 274).isActive = true
+        nowLabel.centerYAnchor.constraint(equalTo: self.view!.topAnchor, constant: 135).isActive = true
+        //        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40.0).isActive = true
+        nowLabel.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        nowLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        nowLabel.textAlignment = .center
+        nowLabel.font = UIFont(name: label.font.fontName, size: 22)
+        self.nowLabel = nowLabel
+        
+        secondPartLabel.translatesAutoresizingMaskIntoConstraints = false
+        secondPartLabel.centerXAnchor.constraint(equalTo: self.view!.leftAnchor, constant: 274).isActive = true
+        secondPartLabel.centerYAnchor.constraint(equalTo: self.view!.topAnchor, constant: 257).isActive = true
+        //        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40.0).isActive = true
+        secondPartLabel.widthAnchor.constraint(equalToConstant: 114).isActive = true
+        secondPartLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        secondPartLabel.textAlignment = .center
+        secondPartLabel.font = UIFont(name: label.font.fontName, size: 22)
+        self.secondPartLabel = secondPartLabel
+        
+        thirdPartLabel.translatesAutoresizingMaskIntoConstraints = false
+        thirdPartLabel.centerXAnchor.constraint(equalTo: self.view!.leftAnchor, constant: 276).isActive = true
+        thirdPartLabel.centerYAnchor.constraint(equalTo: self.view!.topAnchor, constant: 374).isActive = true
+        //        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40.0).isActive = true
+        thirdPartLabel.widthAnchor.constraint(equalToConstant: 114).isActive = true
+        thirdPartLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        thirdPartLabel.textAlignment = .center
+        thirdPartLabel.font = UIFont(name: label.font.fontName, size: 22)
+        self.thirdPartLabel = thirdPartLabel
+        
+        
         date.translatesAutoresizingMaskIntoConstraints = false
         date.centerXAnchor.constraint(equalTo: self.view!.leftAnchor, constant: 185.0).isActive = true
         date.centerYAnchor.constraint(equalTo: self.view!.topAnchor, constant: 41.0).isActive = true
         //        label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 40.0).isActive = true
-        date.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+        date.widthAnchor.constraint(equalToConstant: 200).isActive = true
         date.heightAnchor.constraint(equalToConstant: 35.0).isActive = true
         date.textAlignment = .center
         date.font = UIFont(name: label.font.fontName, size: 19)
@@ -224,142 +261,51 @@ class FutureDayViewController: UIViewController, UIScrollViewDelegate {
         self.eveningTemp = labelevening
         
     }
-    func CommentForFutureDay (weather : Weather)->String{ //
-        var comment = ""
-        let night = Array(weather.hourly![0..<6])
-        let morning = Array(weather.hourly![6..<12])
-        let day = Array(weather.hourly![12..<18])
-        let evening = Array(weather.hourly![18..<24])
-        //temperarure and clothes
-        var avgtemp = 0 //for whole day
-        for index in 0...23
-        {avgtemp += Int(weather.hourly![index].tempC)!}
-        avgtemp = avgtemp/24 //for the whole day
-        //print (avgtemp)
-        let avgNight = lroundf(Float(AverageForParts(someHours: night)))
-        let avgMorning = lroundf(Float(AverageForParts(someHours: morning)))
-        let avgDay = lroundf(Float(AverageForParts(someHours: day)))
-        let avgEvening = lroundf(Float(AverageForParts(someHours: evening)))
-//        print (avgNight)
-//        print (avgDay)
-        
-        switch avgtemp
-        {
-        case -70 ..< -30 :
-            comment += "Extremely cold! Avoid being outside unless dressed up properly! "
-            
-        case -30 ..< -10:
-            comment += "Very cold weather. Put on all the warmes clothes and don't say outside for too much. "
-            
-        case -10 ..< -5:
-            comment +=  "Cold frosty weather. Put on a winter coat, scarf and gloves. "
-            
-        case -5 ..< -3:
-            comment +=  "Feels cold and freezing. Put on a coat and a cap. "
-            
-        case -3 ..< 0:
-            comment += "Freezing weather. Dress warmly, put on a coat and probably a cap. "
-            
-        case 0..<3 where Int(weather.hourly![12].humidity)!>70:
-            comment += "Freezing and humid weather. Put on a coat, gloves and a scarf.  "
-            
-        case 0..<3 :
-            comment += "Freezing and humid weather. Put on a coat and jeans. "
-            
-        case 3..<7 where Int(weather.hourly![12].humidity)!>70:
-            comment += "Feels cool and humid. Put on a coat and probably a scarf. "
-            
-        case 3..<7:
-            comment += "Feels cool, put on a jacket and jeans. "
-            
-        case 7..<13:
-            comment += "Comfortable cool weather. Put on a jacket and jeans. "
-            
-        case 13..<18:
-            if (Int(weather.hourly![12].humidity)! > 70){
-                comment += "Quite cool, probably put on a hoodie and jeans."
-            } else {
-                comment += "Feels warm, probably put on a hoodie and jeans. "}
-        case 18..<20:
-            comment += "Feels warm, probably put on a longsleeve and jeans. "
-            
-        case 20..<23:
-            comment += "Feels warm, probably put on a shirt and jeans. "
-            
-        case 23..<25:
-            comment += "Comfortable warm weather. Put on a T-shirt and jeans. "
-            
-        case  25..<35:
-            if (avgtemp > 29) && (Int(weather.hourly![12].humidity)! > 70)
-            {
-                comment += "Very hot outside. Mind dehydration! Put on a t-shirt and shorts. "
+    func fullFillTodayInfo (){
+            let part = getCurrentHour()
+        DispatchQueue.main.async {
+            self.date.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].date!
+            self.cityLabel.text = FutureDayViewController.data!.request[0].query!
+            self.rainComment.text = rainsExpected(weather: FutureDayViewController.data!.weather[0])
+            self.comment.text = Current_Comment(current: FutureDayViewController.data!.current_condition[0], weather: FutureDayViewController.data!.weather[0])
+            self.windComment.text = getWindComment(weather: FutureDayViewController.data!.weather[0])
+            self.nowLabel.text = "Now"
+            self.morningTemp.text = FutureDayViewController.data!.current_condition[0].temp_C + "°C"
+            self.morningImage.image = UIImage(named: FutureDayViewController.data!.current_condition[0].weatherCode)
+            switch(part){
+                case .morning:
+                self.secondPartLabel!.text = "Day"
+                self.dayTemp.text = (FutureDayViewController.data?.weather[0].hourly![15].tempC)! + "°C"
+                self.dayImage.image = UIImage(named: (FutureDayViewController.data?.weather[0].hourly![15].weatherCode)!)
+                self.thirdPartLabel.text = "Evening"
+                self.eveningTemp.text = (FutureDayViewController.data?.weather[0].hourly![21].tempC)! + "°C"
+                self.eveningImage.image = UIImage(named: (FutureDayViewController.data?.weather[0].hourly![21].weatherCode)!)
+            case .day:
+                self.secondPartLabel!.text = "Evening"
+                self.dayTemp.text = (FutureDayViewController.data?.weather[0].hourly![21].tempC)! + "°C"
+                self.dayImage.image = UIImage(named: (FutureDayViewController.data?.weather[0].hourly![21].weatherCode)!)
+                self.thirdPartLabel.text = "Night"
+                self.eveningTemp.text = (FutureDayViewController.data?.weather[1].hourly![3].tempC)! + "°C"
+                self.eveningImage.image = UIImage(named: (FutureDayViewController.data?.weather[1].hourly![3].weatherCode)!)
+            case .evening:
+                self.secondPartLabel!.text = "Night"
+                self.dayTemp.text = (FutureDayViewController.data?.weather[1].hourly![3].tempC)! + "°C"
+                self.dayImage.image = UIImage(named: (FutureDayViewController.data?.weather[1].hourly![3].weatherCode)!)
+                self.thirdPartLabel.text = "Morning"
+                self.eveningTemp.text = (FutureDayViewController.data?.weather[1].hourly![9].tempC)! + "°C"
+                self.eveningImage.image = UIImage(named: (FutureDayViewController.data?.weather[1].hourly![9].weatherCode)!)
+            case .night:
+                self.secondPartLabel!.text = "Morning"
+                self.dayTemp.text = (FutureDayViewController.data?.weather[1].hourly![9].tempC)! + "°C"
+                self.dayImage.image = UIImage(named: (FutureDayViewController.data?.weather[1].hourly![9].weatherCode)!)
+                self.thirdPartLabel.text = "Day"
+                self.eveningTemp.text = (FutureDayViewController.data?.weather[1].hourly![15].tempC)! + "°C"
+                self.eveningImage.image = UIImage(named: (FutureDayViewController.data?.weather[1].hourly![15].weatherCode)!)
             }
-            else { comment += "Feels hot. Put on a t-shirt and shorts. "}
-        case 35..<43:
-            if (Int(weather.hourly![12].humidity)!>30)
-            {
-                comment += "Enormously hot, might be unbearable. Avoid being outside for too long! Don't wear dark colors. "
-            }
-            else { comment += "Extremely hot. Be careful and avoid the sunlight. Don't wear dark colors. "}
-            
-        case 43..<100:
-            comment += "Enormously hot. Mind the risk of a sunstroke. Avoid being outside! Put on the lighest clothes. "
-            
-        default:
-            comment = "There is no comment "
+            FutureDayViewController.counter += 1
+            FutureDayViewController.status = true
         }
-        //considerably cooler or warmer
-        if (Int(weather.maxtempC!)!-Int(weather.mintempC!)! > 10)
-        { comment += "Considerable temperarure difference during the day. " }
-        //rain and snow
-        let allBools = [ProbabilityOfRainOrSnow(someHours: night).0,ProbabilityOfRainOrSnow(someHours: morning).0,ProbabilityOfRainOrSnow(someHours: day).0,ProbabilityOfRainOrSnow(someHours: evening).0]
-        let allTypesOfPr = [ProbabilityOfRainOrSnow(someHours: night).1,ProbabilityOfRainOrSnow(someHours: morning).1,ProbabilityOfRainOrSnow(someHours: day).1,ProbabilityOfRainOrSnow(someHours: evening).1]
-        if (allTypesOfPr.contains("snow"))
-        {comment += "Snowfall is possible. "}
-        else {
-            switch (allBools){
-            case [false,false,false,false]: break
-            case [true,true,true,true] : comment += "Rains during all the day are possible. "
-            case [false,true,true,true] : comment += "Rains during all the day are possible. "
-            case [false,true,true,false] : comment += "Rains in the first part of the day are possible. "
-            case [true,true,true,false] : comment += "Rains in the first part of the day are possible. "
-            case [false,false,true,true] : comment += "Rains in the second part of the day are possible. "
-            case [true,false,true,true] : comment += "Rains in the second part of the day are possible. "
-            case [false,true,false,true] : comment += "Morning and evening rains are possible. "
-            case [true,true,false,true] : comment += "Morning and evening rains are possible. "
-            case [false,true,false,false] : comment += "Rains are possible in the morning. "
-            case [true,true,false,false] : comment += "Rains are possible in the morning. "
-            case [false,false,true,false] : comment += "Rains are possible in the afternoon. "
-            case [true,false,true,false] : comment += "Rains are possible in the afternoon. "
-            case [false,false,false,true] : comment += "Rains are possible in the evening. "
-            case [true,false,false,true] : comment += "Rains are possible in the evening. "
-            case [true,false,false,false] : comment += "Rains are possible in the night. "
-            default : comment += ""
-            }}
-        if (probabilityOfThunder(weather: weather)) {comment += "Mind thunders. "}
-        var maxwind = 0
-        for index in 0...23{
-            if (Int(weather.hourly![index].windspeedKmph)! > maxwind)
-            {maxwind = Int(weather.hourly![index].windspeedKmph)!}
-        }
-        maxwind = maxwind*5/18 //meters per second
-        
-        switch(maxwind){
-        case 7...9:
-            comment += "Mind strong wind! "
-        case 9...20:
-            comment += "Mind very strong wind! "
-        case 20...50:
-            comment += "Extremely strong wind! "
-        default: comment += ""
-        switch ((Int(weather.uvIndex!))!){
-        case 7..<9 : comment += "Mind high UV index."
-        case 9..<12 : comment += "Mind very high UV index, don't forget about sun protection!"
-        case 12..<50: comment += "Mind extremely high UV index! Avoid being outside. "
-        default : comment += ""
-            }
-        }
-        return comment
     }
+    
     
 }

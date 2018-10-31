@@ -63,6 +63,18 @@ func getWindComment(weather : Weather)->String{
     return condition
 }
 
+func getCurrentHour ()-> PartsOfDay{
+    let date = Date()
+    let calendar = Calendar.current
+    let hour = Int(calendar.component(.hour, from: date))
+    switch(hour){
+    case 0...6 :  return .night
+    case 7...12 : return .morning
+    case 13...18 : return .day
+    case 19...24 : return .evening
+    default : return .day
+    }
+}
 
 func ProbabilityOfRainOrSnow (someHours : [Hourly])->(Bool, String?){
     let rainOrSnow = false
