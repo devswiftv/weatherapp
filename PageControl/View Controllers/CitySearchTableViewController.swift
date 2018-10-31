@@ -60,7 +60,7 @@ class CitySearchViewController: UIViewController, UISearchBarDelegate, UITableVi
                     nextVC.orderedViewControllers.map{($0 as! FutureDayViewController).currentCity = self.typedCity}
                
                 }
-}
+}//
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.typedCity = self.cities[indexPath.row]
         performSegue(withIdentifier: "goToForecast", sender: nil)
