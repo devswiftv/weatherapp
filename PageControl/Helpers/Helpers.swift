@@ -36,6 +36,9 @@ func rainsExpected(weather : Weather)->String{
         if (Int(item.chanceofrain)! >= 50 || Int(item.chanceofthunder)! > 50){
             return "Rains expected"
         }
+        else if (Int(item.chanceofsnow)! >= 50){
+            return "Snow expected"
+        }
     }
     return text
 }
@@ -85,3 +88,4 @@ func AverageForParts (someHours : [Hourly])->(Double){
     average = average/6
     return average
 }
+

@@ -8,8 +8,9 @@
 
 import UIKit
 
-class FutureDayViewController: UIViewController {
+class FutureDayViewController: UIViewController, UIScrollViewDelegate {
 
+    
     @IBOutlet weak var windComment: UILabel!
     @IBOutlet weak var rainComment: UILabel!
     @IBOutlet weak var comment: UILabel!
@@ -22,33 +23,61 @@ class FutureDayViewController: UIViewController {
     @IBOutlet weak var eveningTemp: UILabel!
     @IBOutlet weak var dayTemp: UILabel!
     var month : Month?
-    var data : Data?
-    var indexOfDay = 0
+    static var status = false
+    static var data : Data?
+//    var  indexOfDay = 0
     var currentCity = ""
+    static var counter : Int = 0
+    
     override func viewDidLoad() {
+        self.createRecognizer()
         super.viewDidLoad()
         self.layoutLabels()
-        loadData(currentCity: self.currentCity, completion:
-            { [weak self] alldata in
-                self!.fullFillInfo(data: alldata)
-                self?.data = alldata
-        })
-        print(indexOfDay)
-    }
-    func fullFillInfo (data : Data){
-                DispatchQueue.main.async{
-        self.rainComment.text = rainsExpected(weather: data.weather[self.indexOfDay])
-        self.windComment.text = getWindComment(weather: data.weather[self.indexOfDay])
-        self.comment.text = self.CommentForFutureDay(weather: data.weather[self.indexOfDay])
-        self.date.text = data.weather[self.indexOfDay].date!
-        self.cityLabel.text = data.request[0].query!
-        self.morningTemp.text = data.weather[self.indexOfDay].hourly![9].tempC + "°C"
-        self.morningImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![9].weatherCode)
-        self.dayTemp.text = data.weather[self.indexOfDay].hourly![15].tempC + "°C"
-        self.dayImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![15].weatherCode)
-        self.eveningTemp.text = data.weather[self.indexOfDay].hourly![21].tempC + "°C"
-        self.eveningImage.image = UIImage(named: data.weather[self.indexOfDay].hourly![21].weatherCode)
+        print(FutureDayViewController.counter)
+        if FutureDayViewController.status == false{
+            loadData(currentCity: self.currentCity, completion:
+                        { [weak self] alldata in
+                                FutureDayViewController.data = alldata
+                                self!.fullFillInfo()
+                            
+                    })
+//            FutureDayViewController.status = true
+        } else {
+            self.fullFillInfo()
         }
+    }
+    @objc func handleSwipe(_ gesture: UIGestureRecognizer) {
+        print("swiped")
+        self.dismiss(animated: true, completion: nil)
+        FutureDayViewController.counter = 0
+        FutureDayViewController.status = false
+    }
+    func createRecognizer (){
+        let recogniser = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
+        recogniser.direction = .down
+        self.view.addGestureRecognizer(recogniser)
+        
+    }
+    func fullFillInfo (){
+        
+        
+                DispatchQueue.main.async{
+        self.rainComment.text = rainsExpected(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
+        self.windComment.text = getWindComment(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
+        self.comment.text = self.CommentForFutureDay(weather: FutureDayViewController.data!.weather[FutureDayViewController.counter])
+        self.date.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].date!
+        self.cityLabel.text = FutureDayViewController.data!.request[0].query!
+        self.morningTemp.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![9].tempC + "°C"
+        self.morningImage.image = UIImage(named: FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![9].weatherCode)
+        self.dayTemp.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![15].tempC + "°C"
+        self.dayImage.image = UIImage(named: FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![15].weatherCode)
+        self.eveningTemp.text = FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![21].tempC + "°C"
+        self.eveningImage.image = UIImage(named: FutureDayViewController.data!.weather[FutureDayViewController.counter].hourly![21].weatherCode)
+                    FutureDayViewController.counter += 1
+                    FutureDayViewController.status = true
+        }
+        
+        
     }
     func layoutLabels(){ //fillable elements created programmatically
         let date = UILabel()
@@ -211,8 +240,8 @@ class FutureDayViewController: UIViewController {
         let avgMorning = lroundf(Float(AverageForParts(someHours: morning)))
         let avgDay = lroundf(Float(AverageForParts(someHours: day)))
         let avgEvening = lroundf(Float(AverageForParts(someHours: evening)))
-        print (avgNight)
-        print (avgDay)
+//        print (avgNight)
+//        print (avgDay)
         
         switch avgtemp
         {
@@ -332,4 +361,5 @@ class FutureDayViewController: UIViewController {
         }
         return comment
     }
+    
 }
