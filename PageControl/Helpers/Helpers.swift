@@ -47,16 +47,19 @@ func getWindComment(weather : Weather)->String{
     var flag = 0
     var condition = "Calm"
     for item in weather.hourly!{
-        if (Int(item.windspeedKmph)! > 4){
+        if (Int(item.windspeedKmph)! < 5){
             condition = "Light breeze"
         }
-        else if (Int(item.windspeedKmph)! > 19){
+       else  if (Int(item.windspeedKmph)! < 1){
+            condition = "No wind"
+        }
+        else if (Int(item.windspeedKmph)! < 19){
             condition = "Fresh breeze"
         }
-        else if (Int(item.windspeedKmph)! > 32){
+        else if (Int(item.windspeedKmph)! < 32){
             condition = "Mind strong wind!"
         }
-        else if (Int(item.windspeedKmph)! > 55){
+        else {
             condition = "Mind the storm!"
         }
     }
